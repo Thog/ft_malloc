@@ -9,10 +9,9 @@ void				*alloc_tiny(size_t size)
 		if (!(block = alloc_block(&g_env.tiny, TINY_ZONE)))
 			return (NULL);
 		prepare_block(&block, size);
-		g_env.tiny = block;
-		return (block->addr);
 	}
-	setup_block(&block, size);
+	else
+		setup_block(&block, size);
 	return (block->addr);
 }
 
@@ -25,10 +24,9 @@ void				*alloc_small(size_t size)
 		if (!(block = alloc_block(&g_env.small, SMALL_ZONE)))
 			return (NULL);
 		prepare_block(&block, size);
-		g_env.small = block;
-		return (block->addr);
 	}
-	setup_block(&block, size);
+	else
+		setup_block(&block, size);
 	return (block->addr);
 }
 
@@ -41,9 +39,8 @@ void				*alloc_large(size_t size)
 		if (!(block = alloc_block(&g_env.large, size)))
 			return (NULL);
 		prepare_block(&block, size);
-		g_env.large = block;
-		return (block->addr);
 	}
-	setup_block(&block, size);
+	else
+		setup_block(&block, size);
 	return (block->addr);
 }

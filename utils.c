@@ -44,20 +44,23 @@ size_t		show_mem(char *name, t_block *base)
 
 	total = 0;
 
-
 	ft_putstr(name);
 	ft_putstr("0x");
 	ft_putnbrbase((uintmax_t)base, "0123456789abcdef");
 	ft_putstr("\n");
 	while(base)
 	{
-		ft_putnbrbase((uintmax_t)base, "0123456789abcdef");
-		ft_putstr(" - ");
-		ft_putnbrbase(((uintmax_t)base + base->size), "0123456789abcdef");
-		ft_putstr(" : ");
-		ft_putnbrbase((uintmax_t)base->size, "0123456789");
-		ft_putstr(" octets\n");
-		total += base->size;
+		if (!base->free)
+		{
+			
+			ft_putnbrbase((uintmax_t)base, "0123456789abcdef");
+			ft_putstr(" - ");
+			ft_putnbrbase(((uintmax_t)base + base->size), "0123456789abcdef");
+			ft_putstr(" : ");
+			ft_putnbrbase((uintmax_t)base->size, "0123456789");
+			ft_putstr(" octets\n");
+			total += base->size;
+		}
 		base = base->next;
 	}
 	return (total);
