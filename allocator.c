@@ -36,7 +36,7 @@ void				*alloc_large(size_t size)
 
 	if (!(block = find_block(g_env.large, size + sizeof(t_block))))
 	{
-		if (!(block = alloc_block(&g_env.large, size)))
+		if (!(block = alloc_block(&g_env.large, size + sizeof(t_block))))
 			return (NULL);
 		prepare_block(&block, size);
 	}

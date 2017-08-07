@@ -42,12 +42,14 @@ void	free(void *ptr)
 
 	block = block_from_ptr(ptr);
 	ft_putstr("\n\n");
-	ft_putstr("FREE: 0x");
-	ft_putnbrbase(block, "0123456789ABCDEF");
+	ft_putnbrbase(block->size, "0123456789ABCDEF");
 	ft_putstr("\n\nBEFORE\n\n");
 	show_alloc_mem();
 	if (block)
+	{
 		block->free = 1;
+		post_free(block);
+	}
 	ft_putstr("\n\nAFTER\n\n");
 	show_alloc_mem();
 	ft_putstr("============================\n\n\n");

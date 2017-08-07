@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <unistd.h>
+#include "malloc.h"
 
 # define SMALL_SIZE			(size_t)getpagesize() * 16
 
@@ -45,11 +46,25 @@ void		ft_putnbrbase(uintmax_t nbr, char *base)
 
 int main()
 {
-	char *ptr = malloc(32);
-	*ptr = 'A';
-	*(ptr + 1) = '\n';
-	*(ptr + 2) = '\0';
-	ft_putstr(ptr);
-	free(ptr);
+	void *ptr1;
+	ft_putstr("MALLOC\n");
+	malloc(1024);
+	
+	ft_putstr("MALLOC\n");
+	malloc(1024 * 32);
+	
+	ft_putstr("MALLOC\n");
+	malloc(1024 * 1024);
+	
+	ft_putstr("MALLOC\n");
+	ptr1 = malloc(1024 * 1024 * 16);
+
+	ft_putstr("MALLOC\n");
+	malloc(1024 * 1024 * 128);
+
+	show_alloc_mem();
+	ft_putstr("FREE 2222222\n");
+	free(ptr1);
+	//show_alloc_mem();
 	return (0);
 }

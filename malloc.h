@@ -44,4 +44,5 @@ t_block				*find_block_for_free(t_block *zone, void *ptr);
 void				ft_putnbrbase(uintmax_t nbr, char *base);
 void				ft_putstr(char const *s);
 void				show_alloc_mem(void);
+void				post_free(t_block *target);
 #endif

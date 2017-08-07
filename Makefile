@@ -7,7 +7,7 @@ endif
 
 NAME = libft_malloc_$(HOSTTYPE).so
 
-SRCS = malloc.c allocator.c mem_map.c io.c utils.c
+SRCS = malloc.c allocator.c mem_map.c io.c utils.c defrag.c
 OBJ = $(SRCS:.c=.o)
 REMOVE = $(OBJ)
 
