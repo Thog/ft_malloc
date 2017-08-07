@@ -39,6 +39,7 @@ t_block				*alloc_block(t_block **base, size_t size);
 t_block				*get_last_block(t_block *start);
 void				setup_block(t_block **block, size_t size);
 void				prepare_block(t_block **block, size_t size);
+t_block				*find_block(t_block *zone, size_t size);
 void				ft_putnbrbase(uintmax_t nbr, char *base);
 void				ft_putstr(char const *s);
 void				show_alloc_mem(void);
