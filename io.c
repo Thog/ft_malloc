@@ -1,6 +1,17 @@
 #include "malloc.h"
 
-size_t	ft_strlen(const char *s)
+static void	ft_putnbrbase_inner(uintmax_t nbr, char *base, size_t baselen)
+{
+	if (nbr >= baselen)
+	{
+		ft_putnbrbase_inner(nbr / baselen, base, baselen);
+		ft_putnbrbase_inner(nbr % baselen, base, baselen);
+	}
+	else
+		write(1, base + nbr, 1);
+}
+
+size_t		ft_strlen(const char *s)
 {
 	size_t	counter;
 
@@ -14,7 +25,7 @@ size_t	ft_strlen(const char *s)
 	return (counter);
 }
 
-void	ft_putstr(char const *s)
+void		ft_putstr(char const *s)
 {
 	int		i;
 
@@ -23,19 +34,20 @@ void	ft_putstr(char const *s)
 		write(1, s, i);
 }
 
-static void	ft_putnbrbase_inner(uintmax_t nbr, char *base, size_t baselen)
-{
-	if (nbr >= baselen)
-	{
-		ft_putnbrbase_inner(nbr / baselen, base, baselen);
-		ft_putnbrbase_inner(nbr % baselen, base, baselen);
-	}
-	else
-		write(1, base + nbr, 1);
-}
-
 void		ft_putnbrbase(uintmax_t nbr, char *base)
 {
 	ft_putnbrbase_inner(nbr, base, ft_strlen(base));
 }
 
+void		*ft_memcpy(void *s1, const void *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (n > i)
+	{
+		((char*)s1)[i] = ((char*)s2)[i];
+		i++;
+	}
+	return (s1);
+}

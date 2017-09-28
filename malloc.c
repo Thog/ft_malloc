@@ -14,14 +14,25 @@ static t_block	*block_from_ptr(void *ptr)
 	return (res);
 }
 
+static void		*resize_block(t_block *blk, size_t size)
+{
+	size_t		size_fix;
+	if (!blk || !blk->next || !blk->next->free)
+		return (NULL);
+
+	size_fix = size - blk->size;
+	if (blk->next->size < size_fix)
+		return (NULL);
+	blk->size = size;
+	blk->next->size -= size_fix;
+	if (blk->next->size == 0)
+		blk->next = blk->next->next;
+	return (blk->addr);
+}
+
 void			*malloc(size_t size)
 {
 	void	*ptr;
-	ft_putstr("\n\n");
-	ft_putstr("MALLOC: 0x");
-	ft_putnbrbase(size, "0123456789ABCDEF");
-	ft_putstr("\n\nBEFORE\n\n");
-	show_alloc_mem();
 	if (size <= 0)
 		return (NULL);
 	else if (size <= TINY_SIZE)
@@ -30,27 +41,52 @@ void			*malloc(size_t size)
 		ptr = alloc_small(size);
 	else
 		ptr = alloc_large(size);
-	ft_putstr("\n\nAFTER\n\n");
-	show_alloc_mem();
-	ft_putstr("============================\n\n\n");
 	return (ptr);
 }
 
-void	free(void *ptr)
+void			free(void *ptr)
 {
 	t_block	*block;
 
 	block = block_from_ptr(ptr);
-	ft_putstr("\n\n");
-	ft_putnbrbase(block->size, "0123456789ABCDEF");
-	ft_putstr("\n\nBEFORE\n\n");
-	show_alloc_mem();
 	if (block)
 	{
 		block->free = 1;
 		post_free(block);
 	}
-	ft_putstr("\n\nAFTER\n\n");
-	show_alloc_mem();
-	ft_putstr("============================\n\n\n");
+}
+
+void			*realloc(void *ptr, size_t size)
+{
+	void	*ret;
+	t_block	*block;
+
+	// malloc
+	if (!ptr)
+		return (malloc(size));
+	block = block_from_ptr(ptr);
+
+	// not found
+	if (!block && ptr)
+		return (NULL);
+	
+	// Minimal sized realloc BSD style
+	if (ptr && !size)
+		size = block->size;
+
+	// Is the next block enougth?
+	if (block && block->size < size && block->next && block->next->free &&
+			(ret = resize_block(block, size)))
+		return (ret);
+	
+	// Regular realloc
+	if (!(ret = malloc(size)))
+		return (NULL);
+	if (block)
+	{
+		ret = ft_memcpy(ret, block->addr, block->size);
+		block->free = 1;
+		post_free(block);
+	}
+	return (ret);
 }

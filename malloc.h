@@ -43,6 +43,7 @@ t_block				*find_block(t_block *zone, size_t size);
 t_block				*find_block_for_free(t_block *zone, void *ptr);
 void				ft_putnbrbase(uintmax_t nbr, char *base);
 void				ft_putstr(char const *s);
+void				*ft_memcpy(void *s1, const void *s2, size_t n);
 void				show_alloc_mem(void);
 void				post_free(t_block *target);
 #endif

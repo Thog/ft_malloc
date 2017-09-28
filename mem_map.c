@@ -4,7 +4,6 @@ t_block		*alloc_block(t_block **base, size_t size)
 {
 	t_block		*tmp;
 
-	ft_putstr("ALLOC_BLOCK\n");
 	if (*base)
 	{
 		tmp = get_last_block(*base);
@@ -20,12 +19,11 @@ t_block		*alloc_block(t_block **base, size_t size)
 	}
 }
 
-t_block				*find_block(t_block *zone, size_t size)
+t_block		*find_block(t_block *zone, size_t size)
 {
 	t_block	*res;
 
 	res = NULL;
-	ft_putstr("FIND_BLOCK\n");
 	while (zone)
 	{
 		if (zone->free && zone->size >= size)
@@ -40,12 +38,11 @@ t_block				*find_block(t_block *zone, size_t size)
 	return (res);
 }
 
-t_block				*find_block_for_free(t_block *zone, void *ptr)
+t_block		*find_block_for_free(t_block *zone, void *ptr)
 {
 	t_block	*res;
 
 	res = NULL;
-	ft_putstr("FIND_BLOCK_FOR_FREE\n");
 	while (zone)
 	{
 		if (zone->addr >= ptr && ptr < (zone->addr + zone->size))

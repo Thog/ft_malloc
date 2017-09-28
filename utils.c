@@ -9,7 +9,6 @@ t_block		*get_last_block(t_block *start)
 
 void		setup_block(t_block **block, size_t size)
 {
-	ft_putstr("SETUP_BLOCK\n");
 	t_block	*new;
 	t_block	*prev_next;
 	t_block	*next;
@@ -29,7 +28,6 @@ void		setup_block(t_block **block, size_t size)
 void		prepare_block(t_block **block, size_t size)
 {
 	t_block	*tmp;
-	ft_putstr("PREPARE_BLOCK\n");
 
 	tmp = *block;
 	tmp->addr = tmp + 1;

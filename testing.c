@@ -2,7 +2,9 @@
 #include <unistd.h>
 #include "malloc.h"
 
-# define SMALL_SIZE			(size_t)getpagesize() * 16
+#define BASE_10 			"0123456789"
+#define BASE_16 			"0123456789ABCDEF"
+#define SMALL_SIZE			(size_t)getpagesize() * 16
 
 size_t	ft_strlen(const char *s)
 {
@@ -27,7 +29,7 @@ void	ft_putstr(char const *s)
 		write(1, s, i);
 }
 
-static void	ft_putnbrbase_inner(uintmax_t nbr, char *base, size_t baselen)
+void	ft_putnbrbase_inner(uintmax_t nbr, char *base, size_t baselen)
 {
 	if (nbr >= baselen)
 	{
@@ -38,33 +40,74 @@ static void	ft_putnbrbase_inner(uintmax_t nbr, char *base, size_t baselen)
 		write(1, base + nbr, 1);
 }
 
-void		ft_putnbrbase(uintmax_t nbr, char *base)
+void	ft_putnbrbase(uintmax_t nbr, char *base)
 {
 	ft_putnbrbase_inner(nbr, base, ft_strlen(base));
 }
-
-
-int main()
+void	info_free(void *ptr)
 {
-	void *ptr1;
-	ft_putstr("MALLOC\n");
-	malloc(1024);
-	
-	ft_putstr("MALLOC\n");
-	malloc(1024 * 32);
-	
-	ft_putstr("MALLOC\n");
-	malloc(1024 * 1024);
-	
-	ft_putstr("MALLOC\n");
-	ptr1 = malloc(1024 * 1024 * 16);
-
-	ft_putstr("MALLOC\n");
-	malloc(1024 * 1024 * 128);
-
+	ft_putstr("FREE\n");
+	ft_putstr("================================\n");
+	free(ptr);
 	show_alloc_mem();
-	ft_putstr("FREE 2222222\n");
-	free(ptr1);
-	//show_alloc_mem();
+	ft_putstr("================================\n\n");
+}
+
+void	*info_malloc(size_t size)
+{
+	void	*ptr;
+
+	ft_putstr("MALLOC ");
+	ft_putnbrbase(size, BASE_10);
+	ft_putstr(" bytes\n================================\n");
+	ptr = malloc(size);
+	show_alloc_mem();
+	ft_putstr("================================\n\n");
+	return (ptr);
+}
+
+void	*info_realloc(void *ptr, size_t size)
+{
+	ft_putstr("REALLOC ");
+	ft_putnbrbase(size, BASE_10);
+	ft_putstr(" bytes\n================================\n");
+	ptr = realloc(ptr, size);
+	show_alloc_mem();
+	ft_putstr("================================\n\n");
+	return (ptr);
+}
+
+void 	test_realloc_simple(size_t malloc_size, size_t realloc_size)
+{
+	void	*ptr;
+
+	ft_putstr("SIMPLE REALLOC TEST (");
+	ft_putnbrbase(malloc_size, BASE_10);
+	ft_putstr(", ");
+	ft_putnbrbase(realloc_size, BASE_10);
+	ft_putstr("\n");
+
+	ptr = info_malloc(malloc_size);
+	ptr = info_realloc(ptr, malloc_size);
+	info_free(ptr);
+}
+
+void	test_by_zone(size_t zone_size)
+{
+	// Larger than the previous
+	test_realloc_simple(zone_size, zone_size + 1);
+	
+	// Less than the previous
+	test_realloc_simple(zone_size, zone_size - 1);
+	
+	// Equal to the previous
+	test_realloc_simple(zone_size, zone_size);
+}
+
+int		main(void)
+{
+	test_by_zone(TINY_SIZE);
+	test_by_zone(SMALL_SIZE);
+	test_by_zone(SMALL_ZONE + 1);
 	return (0);
 }

@@ -25,32 +25,26 @@ static void		defrag_blocks(t_block *blocks, t_block *target, size_t page_size)
 	}
 }
 
-static void		free_page(t_block *blocks, t_block *target)
+static int		free_page(t_block *blocks, t_block *target)
 {
 	t_block		*prev;
 
 	prev = NULL;
 	while (blocks)
 	{
-		if (blocks == target)
+		if (blocks == target && blocks->free)
 		{
 			if (prev)
 				prev->next = blocks->next;
+			else
+				blocks = NULL;
 			munmap(target, target->size + sizeof(t_block));
-			return ;
+			return (!prev);
 		}
 		prev = blocks;
 		blocks = blocks->next;
 	}
-}
-
-static t_block	*get_base(t_block *block)
-{
-	if (block->size <= TINY_SIZE)
-		return (g_env.tiny);
-	else if (block->size <= SMALL_SIZE)
-		return (g_env.small);
-	return (g_env.large);
+	return (0);
 }
 
 static size_t	get_page_size(t_block *block)
@@ -62,8 +56,16 @@ static size_t	get_page_size(t_block *block)
 	return (0);
 }
 
+t_block			*get_base(t_block *block)
+{
+	if (block->size <= TINY_SIZE)
+		return (g_env.tiny);
+	else if (block->size <= SMALL_SIZE)
+		return (g_env.small);
+	return (g_env.large);
+}
 
-void		post_free(t_block *target)
+void			post_free(t_block *target)
 {
 	size_t	page_size;
 	t_block	*blocks;
@@ -71,11 +73,15 @@ void		post_free(t_block *target)
 	blocks = get_base(target);
 	page_size = get_page_size(target);
 
-	ft_putstr("\n\n YOLO \n\n");
-	ft_putnbrbase(target->size, "0123456789ABCDEF");
-	ft_putstr("\n\n YOLO \n\n");
 	if (page_size != 0)
 		defrag_blocks(blocks, target, page_size);
-	else
-		free_page(blocks, target);
+	else if(free_page(blocks, target))
+	{
+		if (blocks == g_env.tiny)
+			g_env.tiny = NULL;
+		else if (blocks == g_env.small)
+			g_env.small = NULL;
+		else if (blocks == g_env.large)
+			g_env.large = NULL;
+	}
 }
