@@ -12,15 +12,15 @@ static void		defrag_blocks(t_block *blocks, t_block *target, size_t page_size)
 	{
 		tmp = sizeof(t_block) + blocks->size;
 		total += tmp;
-		if (prev && ((prev == target && blocks->free && total <= page_size) || (target == blocks && prev->free && total <= page_size)))
+		if (prev && prev == target && blocks->free && total <= page_size && (prev->addr + prev->size) == blocks)
 		{
-			prev->size += blocks->size + sizeof(t_block);
+			prev->size += tmp;
 			prev->next = blocks->next;
 		}
-		else
+		if (prev != target && blocks == target)
 			prev = blocks;
 		if (total > page_size)
-			total = tmp;
+			total = 0;
 		blocks = blocks->next;
 	}
 }
