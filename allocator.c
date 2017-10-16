@@ -16,7 +16,7 @@ void				*alloc_tiny(size_t size)
 {
 	t_block	*block;
 
-	if (!(block = find_block(g_env.tiny, size + sizeof(t_block))))
+	if (!(block = find_block(g_env.tiny, size)))
 	{
 		if (!(block = alloc_block(&g_env.tiny, TINY_ZONE)))
 			return (NULL);
@@ -31,7 +31,7 @@ void				*alloc_small(size_t size)
 {
 	t_block	*block;
 
-	if (!(block = find_block(g_env.small, size + sizeof(t_block))))
+	if (!(block = find_block(g_env.small, size)))
 	{
 		if (!(block = alloc_block(&g_env.small, SMALL_ZONE)))
 			return (NULL);
@@ -46,7 +46,7 @@ void				*alloc_large(size_t size)
 {
 	t_block	*block;
 
-	if (!(block = find_block(g_env.large, size + sizeof(t_block))))
+	if (!(block = find_block(g_env.large, size)))
 	{
 		if (!(block = alloc_block(&g_env.large, size + sizeof(t_block))))
 			return (NULL);

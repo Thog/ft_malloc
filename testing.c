@@ -113,8 +113,6 @@ void	test_by_zone(size_t zone_size)
 
 int		main(void)
 {
-	test_by_zone(TINY_SIZE);
-	test_by_zone(SMALL_SIZE);
-	test_by_zone(SMALL_ZONE + 1);
+	show_alloc_mem();
 	return (0);
 }

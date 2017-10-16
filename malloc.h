@@ -12,6 +12,8 @@
 
 #ifndef MALLOC_H
 # define MALLOC_H
+
+#define BASE_16 			"0123456789ABCDEF"
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/mman.h>
@@ -57,4 +59,5 @@ void				ft_putnbrbase(uintmax_t nbr, char *base);
 void				ft_putstr(char const *s);
 void				*ft_memcpy(void *s1, const void *s2, size_t n);
 void				post_free(t_block *target);
+void				block_info(t_block *block);
 #endif

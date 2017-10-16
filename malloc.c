@@ -16,6 +16,8 @@ static t_block	*block_from_ptr(void *ptr)
 {
 	t_block	*res;
 
+	if (ptr == NULL)
+		return (NULL);
 	res = find_block_for_free(g_env.tiny, ptr);
 	if (res)
 		return (res);
@@ -46,6 +48,9 @@ void			*malloc(size_t size)
 {
 	void	*ptr;
 
+	ft_putstr("MALLOC 0x");
+	ft_putnbrbase(size, BASE_16);
+	ft_putstr("\n");
 	if (size <= 0)
 		return (NULL);
 	else if (size <= TINY_SIZE)
@@ -54,6 +59,7 @@ void			*malloc(size_t size)
 		ptr = alloc_small(size);
 	else
 		ptr = alloc_large(size);
+	block_info(block_from_ptr(ptr));
 	return (ptr);
 }
 
@@ -61,12 +67,17 @@ void			free(void *ptr)
 {
 	t_block	*block;
 
+	ft_putstr("FREE 0x");
+	ft_putnbrbase(ptr, BASE_16);
+	ft_putstr("\n");
 	block = block_from_ptr(ptr);
+	block_info(block);
 	if (block)
 	{
 		block->free = 1;
 		post_free(block);
 	}
+	show_alloc_mem();
 }
 
 void			*realloc(void *ptr, size_t size)
@@ -74,10 +85,16 @@ void			*realloc(void *ptr, size_t size)
 	void	*ret;
 	t_block	*block;
 
+	ft_putstr("REALLOC 0x");
+	ft_putnbrbase(ptr, BASE_16);
+	ft_putstr(" , 0x");
+	ft_putnbrbase(size, BASE_16);
+	ft_putstr("\n");
 	if (!ptr)
 		return (malloc(size));
 	block = block_from_ptr(ptr);
-	if (!block && ptr)
+	block_info(block);
+	if ((!block || block->free) && ptr)
 		return (NULL);
 	if (ptr && !size)
 		size = block->size;
@@ -90,6 +107,8 @@ void			*realloc(void *ptr, size_t size)
 	{
 		ret = ft_memcpy(ret, block->addr, block->size);
 		block->free = 1;
+		ft_putstr("REALLOC\n");
+		block_info(block);
 		post_free(block);
 	}
 	return (ret);

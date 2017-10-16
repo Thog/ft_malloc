@@ -20,7 +20,7 @@ static void	ft_putnbrbase_inner(uintmax_t nbr, char *base, size_t baselen)
 		ft_putnbrbase_inner(nbr % baselen, base, baselen);
 	}
 	else
-		write(1, base + nbr, 1);
+		write(2, base + nbr, 1);
 }
 
 size_t		ft_strlen(const char *s)
@@ -43,7 +43,7 @@ void		ft_putstr(char const *s)
 
 	i = ft_strlen(s);
 	if (i)
-		write(1, s, i);
+		write(2, s, i);
 }
 
 void		ft_putnbrbase(uintmax_t nbr, char *base)
