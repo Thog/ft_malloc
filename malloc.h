@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/16 10:09:08 by tguillem          #+#    #+#             */
+/*   Updated: 2017/10/16 10:09:56 by tguillem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MALLOC_H
 # define MALLOC_H
 # include <stdlib.h>
@@ -30,7 +42,7 @@ t_env				g_env;
 void				free(void *ptr);
 void				*malloc(size_t size);
 void				*realloc(void *ptr, size_t size);
-
+void				show_alloc_mem(void);
 
 void				*alloc_tiny(size_t size);
 void				*alloc_small(size_t size);
@@ -44,6 +56,5 @@ t_block				*find_block_for_free(t_block *zone, void *ptr);
 void				ft_putnbrbase(uintmax_t nbr, char *base);
 void				ft_putstr(char const *s);
 void				*ft_memcpy(void *s1, const void *s2, size_t n);
-void				show_alloc_mem(void);
 void				post_free(t_block *target);
 #endif

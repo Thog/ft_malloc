@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mem_map.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/16 09:49:05 by tguillem          #+#    #+#             */
+/*   Updated: 2017/10/16 09:49:37 by tguillem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "malloc.h"
 
 t_block		*alloc_block(t_block **base, size_t size)
@@ -7,13 +19,15 @@ t_block		*alloc_block(t_block **base, size_t size)
 	if (*base)
 	{
 		tmp = get_last_block(*base);
-		if ((tmp->next = (t_block*)mmap(0, size, PROT_RW, MAP_AP, -1, 0)) == MAP_FAILED)
+		if ((tmp->next = (t_block*)mmap(0, size, PROT_RW, MAP_AP, -1, 0))
+				== MAP_FAILED)
 			return (NULL);
 		return (tmp->next);
 	}
 	else
 	{
-		if ((*base = (t_block*)mmap(0, size, PROT_RW, MAP_AP, -1, 0)) == MAP_FAILED)
+		if ((*base = (t_block*)mmap(0, size, PROT_RW, MAP_AP, -1, 0))
+				== MAP_FAILED)
 			return (NULL);
 		return (*base);
 	}

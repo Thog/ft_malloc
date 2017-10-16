@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   defrag.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/16 09:46:02 by tguillem          #+#    #+#             */
+/*   Updated: 2017/10/16 09:48:28 by tguillem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "malloc.h"
 
-static void		defrag_blocks(t_block *blocks, t_block *target, size_t page_size)
+static void		defrag_blocks(t_block *blocks, t_block *target,
+		size_t page_size)
 {
 	t_block		*prev;
 	size_t		tmp;
@@ -12,7 +25,8 @@ static void		defrag_blocks(t_block *blocks, t_block *target, size_t page_size)
 	{
 		tmp = sizeof(t_block) + blocks->size;
 		total += tmp;
-		if (prev && prev == target && blocks->free && total <= page_size && (prev->addr + prev->size) == blocks)
+		if (prev && prev == target && blocks->free && total <= page_size &&
+				(prev->addr + prev->size) == blocks)
 		{
 			prev->size += tmp;
 			prev->next = blocks->next;
@@ -72,10 +86,9 @@ void			post_free(t_block *target)
 
 	blocks = get_base(target);
 	page_size = get_page_size(target);
-
 	if (page_size != 0)
 		defrag_blocks(blocks, target, page_size);
-	else if(free_page(blocks, target))
+	else if (free_page(blocks, target))
 	{
 		if (blocks == g_env.tiny)
 			g_env.tiny = NULL;

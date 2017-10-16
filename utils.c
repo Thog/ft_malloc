@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/16 09:50:03 by tguillem          #+#    #+#             */
+/*   Updated: 2017/10/16 09:51:27 by tguillem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "malloc.h"
 
 t_block		*get_last_block(t_block *start)
@@ -41,16 +53,14 @@ size_t		show_mem(char *name, t_block *base, int free_mode)
 	size_t total;
 
 	total = 0;
-
 	ft_putstr(name);
 	ft_putstr("0x");
 	ft_putnbrbase((uintmax_t)base, "0123456789abcdef");
 	ft_putstr("\n");
-	while(base)
+	while (base)
 	{
 		if (base->free == free_mode)
 		{
-			
 			ft_putnbrbase((uintmax_t)base, "0123456789abcdef");
 			ft_putstr(" - ");
 			ft_putnbrbase(((uintmax_t)base + base->size), "0123456789abcdef");

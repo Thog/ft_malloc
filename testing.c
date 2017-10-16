@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   testing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/16 09:57:35 by tguillem          #+#    #+#             */
+/*   Updated: 2017/10/16 10:07:50 by tguillem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include <unistd.h>
 #include "malloc.h"
@@ -44,6 +56,7 @@ void	ft_putnbrbase(uintmax_t nbr, char *base)
 {
 	ft_putnbrbase_inner(nbr, base, ft_strlen(base));
 }
+
 void	info_free(void *ptr)
 {
 	ft_putstr("FREE\n");
@@ -77,7 +90,7 @@ void	*info_realloc(void *ptr, size_t size)
 	return (ptr);
 }
 
-void 	test_realloc_simple(size_t malloc_size, size_t realloc_size)
+void	test_realloc_simple(size_t malloc_size, size_t realloc_size)
 {
 	void	*ptr;
 
@@ -86,7 +99,6 @@ void 	test_realloc_simple(size_t malloc_size, size_t realloc_size)
 	ft_putstr(", ");
 	ft_putnbrbase(realloc_size, BASE_10);
 	ft_putstr("\n");
-
 	ptr = info_malloc(malloc_size);
 	ptr = info_realloc(ptr, malloc_size);
 	info_free(ptr);
@@ -94,13 +106,8 @@ void 	test_realloc_simple(size_t malloc_size, size_t realloc_size)
 
 void	test_by_zone(size_t zone_size)
 {
-	// Larger than the previous
 	test_realloc_simple(zone_size, zone_size + 1);
-	
-	// Less than the previous
 	test_realloc_simple(zone_size, zone_size - 1);
-	
-	// Equal to the previous
 	test_realloc_simple(zone_size, zone_size);
 }
 
