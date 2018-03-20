@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 10:09:08 by tguillem          #+#    #+#             */
-/*   Updated: 2017/10/16 10:09:56 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/19 21:03:51 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 #define BASE_16 			"0123456789ABCDEF"
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdint.h>
 # include <sys/mman.h>
+# include <pthread.h>
 # define TINY_SIZE			(size_t)getpagesize() * 2
 # define SMALL_SIZE			(size_t)getpagesize() * 16
 # define TINY_ZONE			(size_t)(TINY_SIZE + sizeof(t_block)) * 100
@@ -34,9 +36,11 @@ typedef struct		s_block
 
 typedef struct		s_env
 {
-	t_block	*tiny;
-	t_block	*small;
-	t_block	*large;
+	t_block						*tiny;
+	t_block						*small;
+	t_block						*large;
+	pthread_mutex_t				lock;
+	int										lock_init;
 }					t_env;
 
 t_env				g_env;
@@ -60,4 +64,6 @@ void				ft_putstr(char const *s);
 void				*ft_memcpy(void *s1, const void *s2, size_t n);
 void				post_free(t_block *target);
 void				block_info(t_block *block);
+void				lock(void);
+void				unlock(void);
 #endif

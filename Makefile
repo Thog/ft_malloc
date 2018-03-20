@@ -1,4 +1,4 @@
-CFLAGS = -g -Wextra -Wall -march=native -I./
+CFLAGS = -fPIC -pthread -g -Wextra -Wall -march=native -I./
 CC = gcc
 
 ifeq ($(HOSTTYPE),)
@@ -8,7 +8,7 @@ endif
 NAME_NO_ARCH = libft_malloc.so
 NAME = libft_malloc_$(HOSTTYPE).so
 
-SRCS = malloc.c allocator.c mem_map.c io.c utils.c defrag.c
+SRCS = malloc.c allocator.c mem_map.c io.c utils.c defrag.c locking.c
 OBJ = $(SRCS:.c=.o)
 REMOVE = $(OBJ)
 

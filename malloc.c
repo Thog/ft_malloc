@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:51:55 by tguillem          #+#    #+#             */
-/*   Updated: 2017/10/16 09:56:18 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/20 20:55:53 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,19 @@ static void		*resize_block(t_block *blk, size_t size)
 	return (blk->addr);
 }
 
-void			*malloc(size_t size)
+void *calloc(size_t nmemb, size_t size)
+{
+	if (nmemb == 0 || size == 0)
+		return (NULL);
+	return (malloc(nmemb * size));
+}
+
+void			*internal_malloc(size_t size)
 {
 	void	*ptr;
 
 	ft_putstr("MALLOC 0x");
-	ft_putnbrbase(size, BASE_16);
+	ft_putnbrbase((uintmax_t)size, "0123456789abcdef");
 	ft_putstr("\n");
 	if (size <= 0)
 		return (NULL);
@@ -59,41 +66,55 @@ void			*malloc(size_t size)
 		ptr = alloc_small(size);
 	else
 		ptr = alloc_large(size);
-	block_info(block_from_ptr(ptr));
 	return (ptr);
 }
 
-void			free(void *ptr)
+void			*malloc(size_t size)
+{
+	void	*res;
+
+	lock();
+	res = internal_malloc(size);
+	unlock();
+	return (res);
+}
+
+void			internal_free(void *ptr)
 {
 	t_block	*block;
 
 	ft_putstr("FREE 0x");
-	ft_putnbrbase(ptr, BASE_16);
+	ft_putnbrbase((uintmax_t)ptr, "0123456789abcdef");
 	ft_putstr("\n");
 	block = block_from_ptr(ptr);
 	block_info(block);
 	if (block)
 	{
 		block->free = 1;
-		post_free(block);
+		post_free(block);		
 	}
-	show_alloc_mem();
 }
 
-void			*realloc(void *ptr, size_t size)
+void			free(void *ptr)
+{
+	lock();
+	internal_free(ptr);
+	unlock();
+}
+
+void			*internal_realloc(void *ptr, size_t size)
 {
 	void	*ret;
 	t_block	*block;
 
 	ft_putstr("REALLOC 0x");
-	ft_putnbrbase(ptr, BASE_16);
+	ft_putnbrbase((uintmax_t)ptr, "0123456789abcdef");
 	ft_putstr(" , 0x");
 	ft_putnbrbase(size, BASE_16);
 	ft_putstr("\n");
 	if (!ptr)
-		return (malloc(size));
+		return (internal_malloc(size));
 	block = block_from_ptr(ptr);
-	block_info(block);
 	if ((!block || block->free) && ptr)
 		return (NULL);
 	if (ptr && !size)
@@ -101,15 +122,23 @@ void			*realloc(void *ptr, size_t size)
 	if (block && block->size < size && block->next && block->next->free &&
 			(ret = resize_block(block, size)))
 		return (ret);
-	if (!(ret = malloc(size)))
+	if (!(ret = internal_malloc(size)))
 		return (NULL);
 	if (block)
 	{
 		ret = ft_memcpy(ret, block->addr, block->size);
 		block->free = 1;
-		ft_putstr("REALLOC\n");
-		block_info(block);
 		post_free(block);
 	}
 	return (ret);
+}
+
+void			*realloc(void *ptr, size_t size)
+{
+	void	*res;
+
+	lock();
+	res = internal_realloc(ptr, size);
+	unlock();
+	return (res);
 }

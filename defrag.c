@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:46:02 by tguillem          #+#    #+#             */
-/*   Updated: 2017/10/16 09:48:28 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/20 01:48:47 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void			post_free(t_block *target)
 	blocks = get_base(target);
 	page_size = get_page_size(target);
 	if (page_size != 0)
-		defrag_blocks(blocks, target, page_size);
+		defrag_blocks(blocks, target, page_size); // <- problems here
 	else if (free_page(blocks, target))
 	{
 		if (blocks == g_env.tiny)

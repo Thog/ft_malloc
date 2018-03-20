@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:49:05 by tguillem          #+#    #+#             */
-/*   Updated: 2017/10/16 09:49:37 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/20 20:56:23 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ t_block		*find_block(t_block *zone, size_t size)
 
 t_block		*find_block_for_free(t_block *zone, void *ptr)
 {
-	t_block	*res;
+	uint64_t	addr;
 
-	res = NULL;
 	while (zone)
 	{
-		if (zone->addr >= ptr && ptr < (zone->addr + zone->size))
+		addr = (uint64_t)zone->addr;
+		if (ptr >= zone->addr && (uint64_t)ptr < (addr + zone->size))
 			return (zone);
 		zone = zone->next;
 	}
-	return (res);
+	return (NULL);
 }

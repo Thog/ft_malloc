@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:50:03 by tguillem          #+#    #+#             */
-/*   Updated: 2017/10/16 09:51:27 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/20 01:14:43 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ void		block_info(t_block *block)
 		ft_putstr("(null)\n");
 		return;
 	}
-	ft_putnbrbase((uintmax_t)block, "0123456789abcdef");
+	ft_putnbrbase((uintmax_t)block->addr, "0123456789abcdef");
 	ft_putstr(" - ");
-	ft_putnbrbase(((uintmax_t)block + block->size), "0123456789abcdef");
+	ft_putnbrbase(((uintmax_t)block->addr + block->size), "0123456789abcdef");
 	ft_putstr(" : ");
 	ft_putnbrbase((uintmax_t)block->size, "0123456789");
 	ft_putstr(" bytes (");
