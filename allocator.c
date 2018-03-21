@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:45:43 by tguillem          #+#    #+#             */
-/*   Updated: 2018/03/20 00:56:43 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/21 17:16:13 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,13 @@ void				*alloc_tiny(size_t size)
 	{
 		if (!(block = alloc_block(&g_env.tiny, TINY_ZONE)))
 			return (NULL);
-		prepare_block(&block, size);
+		init_new_block(&block, size, TINY_ZONE);
 	}
 	else
+	{
+		//ft_putstr("SETUP BLOCKS\n");
 		setup_block(&block, size);
+	}
 	return (block->addr);
 }
 
@@ -35,7 +38,7 @@ void				*alloc_small(size_t size)
 	{
 		if (!(block = alloc_block(&g_env.small, SMALL_ZONE)))
 			return (NULL);
-		prepare_block(&block, size);
+		init_new_block(&block, size,  SMALL_ZONE);
 	}
 	else
 		setup_block(&block, size);
@@ -50,7 +53,7 @@ void				*alloc_large(size_t size)
 	{
 		if (!(block = alloc_block(&g_env.large, size + sizeof(t_block))))
 			return (NULL);
-		prepare_block(&block, size);
+		init_new_block(&block, size, size);
 	}
 	else
 		setup_block(&block, size);

@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:51:55 by tguillem          #+#    #+#             */
-/*   Updated: 2018/03/20 20:55:53 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/21 17:21:14 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ void			*malloc(size_t size)
 
 	lock();
 	res = internal_malloc(size);
+	ft_putstr("malloc: ");
+	block_info(block_from_ptr(res));
 	unlock();
 	return (res);
 }
@@ -139,6 +141,8 @@ void			*realloc(void *ptr, size_t size)
 
 	lock();
 	res = internal_realloc(ptr, size);
+	ft_putstr("realloc: ");
+	block_info(block_from_ptr(res));
 	unlock();
 	return (res);
 }

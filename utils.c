@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:50:03 by tguillem          #+#    #+#             */
-/*   Updated: 2018/03/20 01:14:43 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/21 17:22:55 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,24 +35,36 @@ void		setup_block(t_block **block, size_t size)
 	rest = new->size - size;
 	if (rest > sizeof(t_block))
 	{
-		next = (void*)new->addr + size;
+		next = (t_block*)((char*)new->addr + size);
 		new->next = next;
 		next->addr = next + 1;
 		next->size = rest - sizeof(t_block);
 		next->next = prev_next;
+		next->free = 1;
 	}
 	new->size = size;
 }
 
-void		prepare_block(t_block **block, size_t size)
+void		init_new_block(t_block **block, size_t size, size_t zone_size)
 {
 	t_block	*tmp;
+	t_block	*rest;
 
 	tmp = *block;
+
 	tmp->addr = tmp + 1;
 	tmp->free = 0;
 	tmp->size = size;
 	tmp->next = NULL;
+	if (size != zone_size)
+	{
+		rest = (t_block*)((char*)tmp->addr + size);
+		rest->addr = rest + 1;
+		rest->free = 1;
+		rest->size = zone_size - size- BLOCKS_ZONE_SIZE;
+		rest->next = NULL;
+		tmp->next = rest;
+	}
 }
 
 size_t		show_mem(char *name, t_block *base, int free_mode)

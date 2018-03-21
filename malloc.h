@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 10:09:08 by tguillem          #+#    #+#             */
-/*   Updated: 2018/03/19 21:03:51 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/21 17:07:30 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <pthread.h>
 # define TINY_SIZE			(size_t)getpagesize() * 2
 # define SMALL_SIZE			(size_t)getpagesize() * 16
+# define BLOCKS_ZONE_SIZE	(size_t)sizeof(t_block) * 100
 # define TINY_ZONE			(size_t)(TINY_SIZE + sizeof(t_block)) * 100
 # define SMALL_ZONE			(size_t)(SMALL_SIZE + sizeof(t_block)) * 100
 # define PROT_RW			PROT_READ | PROT_WRITE
@@ -56,7 +57,7 @@ void				*alloc_large(size_t size);
 t_block				*alloc_block(t_block **base, size_t size);
 t_block				*get_last_block(t_block *start);
 void				setup_block(t_block **block, size_t size);
-void				prepare_block(t_block **block, size_t size);
+void				init_new_block(t_block **block, size_t size, size_t zone_size);
 t_block				*find_block(t_block *zone, size_t size);
 t_block				*find_block_for_free(t_block *zone, void *ptr);
 void				ft_putnbrbase(uintmax_t nbr, char *base);
