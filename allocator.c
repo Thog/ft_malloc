@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:45:43 by tguillem          #+#    #+#             */
-/*   Updated: 2018/03/21 17:16:13 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/21 19:33:55 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void				*alloc_tiny(size_t size)
 		//ft_putstr("SETUP BLOCKS\n");
 		setup_block(&block, size);
 	}
+	block_check(block);
 	return (block->addr);
 }
 
@@ -42,6 +43,7 @@ void				*alloc_small(size_t size)
 	}
 	else
 		setup_block(&block, size);
+	block_check(block);
 	return (block->addr);
 }
 
@@ -57,5 +59,6 @@ void				*alloc_large(size_t size)
 	}
 	else
 		setup_block(&block, size);
+	block_check(block);
 	return (block->addr);
 }

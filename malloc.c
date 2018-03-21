@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:51:55 by tguillem          #+#    #+#             */
-/*   Updated: 2018/03/21 17:21:14 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/21 20:36:37 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,9 @@ void			*malloc(size_t size)
 	res = internal_malloc(size);
 	ft_putstr("malloc: ");
 	block_info(block_from_ptr(res));
+	check_integrity(g_env.tiny);
+	check_integrity(g_env.small);
+	check_integrity(g_env.large);
 	unlock();
 	return (res);
 }
@@ -100,7 +103,15 @@ void			internal_free(void *ptr)
 void			free(void *ptr)
 {
 	lock();
+	ft_putstr("BEFORE FREE\n");
+	check_integrity(g_env.tiny);
+	check_integrity(g_env.small);
+	check_integrity(g_env.large);
 	internal_free(ptr);
+	ft_putstr("AFTER FREE\n");
+	check_integrity(g_env.tiny);
+	check_integrity(g_env.small);
+	check_integrity(g_env.large);
 	unlock();
 }
 
@@ -119,8 +130,11 @@ void			*internal_realloc(void *ptr, size_t size)
 	block = block_from_ptr(ptr);
 	if ((!block || block->free) && ptr)
 		return (NULL);
-	if (ptr && !size)
-		size = block->size;
+	if (ptr && size == 0) // if size is equal to zero, and ptr is not NULL, then the call is equivalent to free(ptr).
+	{
+		free(ptr);
+		return (NULL); // maybe?
+	}
 	if (block && block->size < size && block->next && block->next->free &&
 			(ret = resize_block(block, size)))
 		return (ret);
@@ -143,6 +157,9 @@ void			*realloc(void *ptr, size_t size)
 	res = internal_realloc(ptr, size);
 	ft_putstr("realloc: ");
 	block_info(block_from_ptr(res));
+	check_integrity(g_env.tiny);
+	check_integrity(g_env.small);
+	check_integrity(g_env.large);
 	unlock();
 	return (res);
 }

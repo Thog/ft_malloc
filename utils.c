@@ -6,11 +6,33 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:50:03 by tguillem          #+#    #+#             */
-/*   Updated: 2018/03/21 17:22:55 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/21 21:47:06 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
+#include <assert.h>
+
+void		ft_abort(char *message)
+{
+	ft_putstr(message);
+	abort();
+}
+
+void ft_assert(int assert, const char *function, const char *file, int line)
+{
+	if (!assert)
+	{
+		ft_putstr("Asset failed: ");
+		ft_putstr(file);
+		ft_putstr(":");
+		ft_putstr(function);
+		ft_putstr(":");
+		ft_putnbrbase(line, "0123456789");
+		ft_putstr("\n");
+		ft_abort("Aborted\n");
+	}
+}
 
 t_block		*get_last_block(t_block *start)
 {
@@ -42,6 +64,8 @@ void		setup_block(t_block **block, size_t size)
 		next->next = prev_next;
 		next->free = 1;
 	}
+	else
+		new->next = prev_next;
 	new->size = size;
 }
 
@@ -59,6 +83,9 @@ void		init_new_block(t_block **block, size_t size, size_t zone_size)
 	if (size != zone_size)
 	{
 		rest = (t_block*)((char*)tmp->addr + size);
+		ft_putstr("REST 0x");
+		ft_putnbrbase((uintmax_t)rest, "0123456789abcdef");
+		ft_putstr("\n");
 		rest->addr = rest + 1;
 		rest->free = 1;
 		rest->size = zone_size - size- BLOCKS_ZONE_SIZE;
@@ -93,6 +120,34 @@ size_t		show_mem(char *name, t_block *base, int free_mode)
 	return (total);
 }
 
+void		block_check(t_block *block)
+{
+	uint64_t		block_addr;
+
+	block_addr = (uint64_t)block;
+	if ((block_addr + sizeof(t_block)) != (uint64_t)block->addr)
+	{
+		ft_putstr("0x");
+		ft_putnbrbase((uintmax_t)block_addr + sizeof(t_block), "0123456789abcdef");
+		ft_putstr(" - ");
+		ft_putstr("0x");
+		ft_putnbrbase((uintmax_t)block->addr, "0123456789abcdef");
+		ft_putstr("\n");
+		ft_assert(0, __FUNCTION__, __FILE__, __LINE__);
+	}
+	ft_assert(block->free == 0 || block->free == 1, __FUNCTION__, __FILE__, __LINE__);
+}
+
+void		check_integrity(t_block *zone)
+{
+	while (zone)
+	{
+		block_info(zone);
+		block_check(zone);
+		zone = zone->next;
+	}
+}
+
 void		block_info(t_block *block)
 {
 	if (block == NULL)
@@ -100,6 +155,8 @@ void		block_info(t_block *block)
 		ft_putstr("(null)\n");
 		return;
 	}
+	ft_putnbrbase((uintmax_t)block, "0123456789abcdef");
+	ft_putstr(" - ");
 	ft_putnbrbase((uintmax_t)block->addr, "0123456789abcdef");
 	ft_putstr(" - ");
 	ft_putnbrbase(((uintmax_t)block->addr + block->size), "0123456789abcdef");

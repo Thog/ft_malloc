@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 10:09:08 by tguillem          #+#    #+#             */
-/*   Updated: 2018/03/21 17:07:30 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/21 19:55:38 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,7 @@ void				post_free(t_block *target);
 void				block_info(t_block *block);
 void				lock(void);
 void				unlock(void);
+void				block_check(t_block *block);
+void				ft_abort(char *message);
+void				check_integrity(t_block *zone);
 #endif

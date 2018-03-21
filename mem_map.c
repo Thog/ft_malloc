@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:49:05 by tguillem          #+#    #+#             */
-/*   Updated: 2018/03/21 17:15:21 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/03/21 19:34:27 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_block		*find_block(t_block *zone, size_t size)
 	res = NULL;
 	while (zone)
 	{
+		block_check(zone);
 		if (zone->free && zone->size >= size)
 		{
 			if (!res || (res->size < zone->size))
@@ -59,6 +60,7 @@ t_block		*find_block_for_free(t_block *zone, void *ptr)
 	while (zone)
 	{
 		addr = (uint64_t)zone->addr;
+		block_check(zone);
 		if (ptr >= zone->addr && (uint64_t)ptr < (addr + zone->size))
 			return (zone);
 		zone = zone->next;
