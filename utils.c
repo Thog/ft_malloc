@@ -6,11 +6,11 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:50:03 by tguillem          #+#    #+#             */
-/*   Updated: 2018/03/21 21:47:06 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/04/10 14:47:47 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+#include "malloc_internal.h"
 #include <assert.h>
 
 void		ft_abort(char *message)

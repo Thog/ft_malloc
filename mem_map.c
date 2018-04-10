@@ -6,11 +6,11 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:49:05 by tguillem          #+#    #+#             */
-/*   Updated: 2018/03/21 19:34:27 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/04/10 14:47:40 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+#include "malloc_internal.h"
 
 t_block		*alloc_block(t_block **base, size_t size)
 {

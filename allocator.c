@@ -6,11 +6,11 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:45:43 by tguillem          #+#    #+#             */
-/*   Updated: 2018/03/21 19:33:55 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/04/10 14:47:22 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+#include "malloc_internal.h"
 
 void				*alloc_tiny(size_t size)
 {

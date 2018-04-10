@@ -1,4 +1,4 @@
-#include "malloc.h"
+#include "malloc_internal.h"
 #include <errno.h>
 
 int			init_lock(void)

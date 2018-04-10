@@ -6,11 +6,11 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:46:02 by tguillem          #+#    #+#             */
-/*   Updated: 2018/03/21 15:59:04 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/04/10 14:47:26 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+#include "malloc_internal.h"
 
 static void		defrag_blocks(t_block *blocks, t_block *target,
 		size_t page_size)

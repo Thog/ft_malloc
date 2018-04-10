@@ -6,11 +6,11 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:48:47 by tguillem          #+#    #+#             */
-/*   Updated: 2018/02/03 14:51:12 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/04/10 14:47:29 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+#include "malloc_internal.h"
 
 static void	ft_putnbrbase_inner(uintmax_t nbr, char *base, size_t baselen)
 {

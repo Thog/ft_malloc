@@ -6,13 +6,13 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 09:57:35 by tguillem          #+#    #+#             */
-/*   Updated: 2017/10/16 10:07:50 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/04/10 14:47:43 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
-#include "malloc.h"
+#include "malloc_internal.h"
 
 #define BASE_10 			"0123456789"
 #define BASE_16 			"0123456789ABCDEF"
