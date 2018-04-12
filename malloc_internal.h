@@ -7,11 +7,16 @@
 # include <stdint.h>
 # include <sys/mman.h>
 # include <pthread.h>
+
+#define ENV_LARGE 0
+#define ENV_TINY 1
+#define ENV_SMALL 2
+#define ALLOC_COUNT 100
 # define TINY_SIZE			(size_t)getpagesize() * 2
 # define SMALL_SIZE			(size_t)getpagesize() * 16
-# define BLOCKS_ZONE_SIZE	(size_t)sizeof(t_block) * 100
-# define TINY_ZONE			(size_t)(TINY_SIZE + sizeof(t_block)) * 100
-# define SMALL_ZONE			(size_t)(SMALL_SIZE + sizeof(t_block)) * 100
+# define BLOCKS_ZONE_SIZE	(size_t)sizeof(t_block) * ALLOC_COUNT
+# define TINY_ZONE			(size_t)(TINY_SIZE * ALLOC_COUNT)
+# define SMALL_ZONE			(size_t)(SMALL_SIZE * ALLOC_COUNT)
 # define PROT_RW			PROT_READ | PROT_WRITE
 # define MAP_AP				MAP_ANON | MAP_PRIVATE
 
@@ -20,7 +25,9 @@ typedef struct		s_block
 	void			*addr;
 	size_t			size;
 	struct s_block	*next;
-	int				free;
+	short			zone_type;
+	char			zone_id;
+	char			free;
 }					t_block;
 
 typedef struct		s_env
@@ -34,30 +41,44 @@ typedef struct		s_env
 
 t_env				g_env;
 
+// Locking for internal_*
+void		lock(void);
+void		unlock(void);
+
+// Printing utils
+void				ft_putnbrbase(uintmax_t nbr, char *base);
+void				ft_putstr(char const *s);
+void				*ft_memcpy(void *s1, const void *s2, size_t n);
+
 void				internal_free(void *ptr);
 void				*internal_malloc(size_t size);
 void				*internal_realloc(void *ptr, size_t size);
 
-t_block			*block_from_ptr(void *ptr);
-void			*resize_block(t_block *blk, size_t size);
-void				*alloc_tiny(size_t size);
-void				*alloc_small(size_t size);
-void				*alloc_large(size_t size);
-t_block				*alloc_block(t_block **base, size_t size);
-t_block				*get_last_block(t_block *start);
-void				setup_block(t_block **block, size_t size);
-void				init_new_block(t_block **block, size_t size, size_t zone_size);
-t_block				*find_block(t_block *zone, size_t size);
-t_block				*find_block_for_free(t_block *zone, void *ptr);
-void				ft_putnbrbase(uintmax_t nbr, char *base);
-void				ft_putstr(char const *s);
-void				*ft_memcpy(void *s1, const void *s2, size_t n);
-void				post_free(t_block *target);
-void				block_info(t_block *block);
-void				lock(void);
-void				unlock(void);
-void				block_check(t_block *block);
-void				ft_abort(char *message);
-void				check_integrity(t_block *zone);
+// get a not free block. used by free and realloc
+t_block			*get_block(void *ptr);
+
+// get the last block in the linked list
+t_block			*get_last_block(t_block *root);
+
+// call find_free_block_by_size and alloc_blocks. This function must auto find the zone type required (used by malloc and realloc in certains cases)
+t_block			*alloc_block(size_t size);
+
+// used to mmap a fresh zone and add the generated block to the global linked list
+t_block			*alloc_blocks(t_block **blocks, size_t zone_size);
+
+// mak a block as free
+t_block			*mark_block_as_free(t_block *block);
+
+// mak a block as used and assign size
+t_block			*mark_block_as_used(t_block *block, size_t size);
+
+// try to find a block that can handle the requested size
+t_block			*find_free_block_by_size(t_block *zone, size_t size);
+
+// Get Zone size by type
+size_t				get_zone_size(int type, size_t size);
+
+// Get a block info
+void		block_info(t_block *block);
 
 #endif

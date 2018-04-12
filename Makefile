@@ -8,7 +8,7 @@ endif
 NAME_NO_ARCH = libft_malloc.so
 NAME = libft_malloc_$(HOSTTYPE).so
 
-SRCS = malloc.c allocator.c mem_map.c io.c utils.c defrag.c locking.c
+SRCS =  alloc_algorithm.c backend.c block_helpers.c block_utils.c frontend.c locking.c page_allocator.c printing_assist.c show_alloc_mem.c
 OBJ = $(SRCS:.c=.o)
 REMOVE = $(OBJ)
 
