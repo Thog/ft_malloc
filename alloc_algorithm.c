@@ -13,7 +13,7 @@ static int		get_env_type(size_t size)
 	return (env_type);
 }
 
-static t_block	**get_zone_by_type(int type)
+t_block	**get_zone_by_type(int type)
 {
 	if (type == ENV_TINY)
 		return (&g_env.tiny);

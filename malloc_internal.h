@@ -14,7 +14,7 @@
 #define ALLOC_COUNT 100
 # define TINY_SIZE			(size_t)getpagesize() * 2
 # define SMALL_SIZE			(size_t)getpagesize() * 16
-# define SPACING (size_t) 32
+# define SPACING (size_t) 0
 # define SPACING_SIZE (size_t)sizeof(t_block) + SPACING
 # define BLOCKS_ZONE_SIZE	SPACING_SIZE* ALLOC_COUNT
 # define TINY_ZONE			(size_t)(TINY_SIZE * ALLOC_COUNT)
@@ -80,6 +80,10 @@ t_block			*find_free_block_by_size(t_block *zone, size_t size);
 
 // Get Zone size by type
 size_t				get_zone_size(int type, size_t size);
+
+// Get a zone by type
+t_block			**get_zone_by_type(int type);
+
 
 // Get a block info
 void		block_info(t_block *block);
