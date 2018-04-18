@@ -20,10 +20,13 @@ t_block			*mark_block_as_free(t_block *block)
 
 t_block			*mark_block_as_used(t_block *block, size_t size)
 {
+	uint64_t block_addr;
+
 	if (block)
 	{
+		block_addr = (uint64_t)block;
 		block->size = size;
-		block->free = 0;		
+		block->free = 0;
 	}
 	return (block);
 }

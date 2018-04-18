@@ -1,8 +1,11 @@
-#include "malloc_internal.h"
+#include "malloc.h"
 
-int main(void)
+int main(int ac , char **av)
 {
-	free(malloc(32));
+	void *ptr = malloc(1024);
+	ptr = realloc(ptr, 8193);
+	show_alloc_mem();	
+	free(ptr + 8193 + 100);
 	show_alloc_mem();
 	return (0);
 }

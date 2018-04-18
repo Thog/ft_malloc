@@ -30,13 +30,14 @@ void		ft_putstr(char const *s)
 	int		i;
 
 	i = ft_strlen(s);
-	if (i)
+	if (i && !SILENT)
 		write(2, s, i);
 }
 
 void		ft_putnbrbase(uintmax_t nbr, char *base)
 {
-	ft_putnbrbase_inner(nbr, base, ft_strlen(base));
+	if (!SILENT)
+		ft_putnbrbase_inner(nbr, base, ft_strlen(base));
 }
 
 void		*ft_memcpy(void *s1, const void *s2, size_t n)

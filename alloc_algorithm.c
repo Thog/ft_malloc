@@ -1,4 +1,5 @@
 #include "malloc_internal.h"
+#include <string.h>
 
 static int		get_env_type(size_t size)
 {
@@ -53,7 +54,9 @@ void			setup_zone(t_block *initial_block, size_t zone_size, size_t alloc_count)
 			if (i == alloc_count - 1)
 				tmp->next = NULL;
 			else
-				tmp->next = (void*)(tmp_addr + sizeof(t_block) + tmp->size);
+			{
+				tmp->next = (void*)(tmp_addr + SPACING_SIZE + tmp->size);
+			}
 			tmp = tmp->next;
 			i++;
 	}
@@ -66,8 +69,10 @@ t_block			*alloc_block(size_t size)
 	t_block	**target_zone;
 	t_block	*res;
 
+	// Get the required region to use
 	env_type = get_env_type(size);
 	target_zone = get_zone_by_type(env_type);
+	// size of the allocations
 	zone_size = get_zone_size(env_type, size);
 
 	// If it' a SMALL or TINY area we can hold 100 allocations so we need to add the block size to the total size
@@ -75,12 +80,15 @@ t_block			*alloc_block(size_t size)
 		zone_size += BLOCKS_ZONE_SIZE;
 	else
 		zone_size += sizeof(t_block); // large area = one block
+
+	// START PROBLEM ZONE
 	res = find_free_block_by_size(*target_zone, size);
 	if (res)
 	{
 		mark_block_as_used(res, size);
 		return (res);
 	}
+	// END PROBLEM ZONE
 	res = alloc_blocks(target_zone, zone_size);
 	res->zone_type = env_type;
 	if (env_type != ENV_LARGE)

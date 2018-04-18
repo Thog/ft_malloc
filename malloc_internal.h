@@ -14,11 +14,14 @@
 #define ALLOC_COUNT 100
 # define TINY_SIZE			(size_t)getpagesize() * 2
 # define SMALL_SIZE			(size_t)getpagesize() * 16
-# define BLOCKS_ZONE_SIZE	(size_t)sizeof(t_block) * ALLOC_COUNT
+# define SPACING (size_t) 32
+# define SPACING_SIZE (size_t)sizeof(t_block) + SPACING
+# define BLOCKS_ZONE_SIZE	SPACING_SIZE* ALLOC_COUNT
 # define TINY_ZONE			(size_t)(TINY_SIZE * ALLOC_COUNT)
 # define SMALL_ZONE			(size_t)(SMALL_SIZE * ALLOC_COUNT)
 # define PROT_RW			PROT_READ | PROT_WRITE
 # define MAP_AP				MAP_ANON | MAP_PRIVATE
+# define SILENT 0
 
 typedef struct		s_block
 {
@@ -80,5 +83,11 @@ size_t				get_zone_size(int type, size_t size);
 
 // Get a block info
 void		block_info(t_block *block);
+
+void		show_alloc_mem(void);
+
+void		block_check(t_block *block);
+
+void		check_integrity(t_block *zone);
 
 #endif
