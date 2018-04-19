@@ -12,14 +12,30 @@
 
 #include "malloc_internal.h"
 
-void *calloc(size_t nmemb, size_t size)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	if (nmemb == 0 || size == 0)
-		return (NULL);
-	return (malloc(nmemb * size));
+	unsigned char *str;
+
+	str = (unsigned char *)b;
+	while (len--)
+		*str++ = c;
+	return (b);
 }
 
-void			*malloc(size_t size)
+// FIXME: do a mul with 128 bits to avoid overflow
+void	*calloc(size_t nmemb, size_t size)
+{
+	size_t	total;
+	void	*res;
+
+	total = nmemb * size;
+	res = malloc(total);
+	if (!res)
+		return (NULL);
+	return (ft_memset(res, 0, total));
+}
+
+void		*malloc(size_t size)
 {
 	void	*res;
 
@@ -29,14 +45,14 @@ void			*malloc(size_t size)
 	return (res);
 }
 
-void			free(void *ptr)
+void		free(void *ptr)
 {
 	lock();
 	internal_free(ptr);
 	unlock();
 }
 
-void			*realloc(void *ptr, size_t size)
+void		*realloc(void *ptr, size_t size)
 {
 	void	*res;
 
@@ -46,7 +62,18 @@ void			*realloc(void *ptr, size_t size)
 	return (res);
 }
 
-void *reallocarray(void *ptr, size_t nmemb, size_t size)
+
+void		*reallocf(void *ptr, size_t size)
+{
+	void	*res;
+
+	res = realloc(ptr, size);
+	if (!res && ptr)
+		free(ptr);
+	return (res);
+}
+
+void		*reallocarray(void *ptr, size_t nmemb, size_t size)
 {
 	if (nmemb * size < nmemb || nmemb * size < size)
 		return (NULL);

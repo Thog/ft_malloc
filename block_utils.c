@@ -8,15 +8,15 @@ t_block			*get_last_block(t_block *root)
 }
 
 t_block			*get_prev_block(t_block *root, t_block *next)
- {
-	 while (root && root->next != next)
-	 	root = root->next;
+{
+	while (root && root->next != next)
+		root = root->next;
 	return (root);
- }
+}
 
 
 
-int post_free(t_block *block)
+int				post_free(t_block *block)
 {
 	t_block	**zone;
 	t_block	*tmp;

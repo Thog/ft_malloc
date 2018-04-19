@@ -35,18 +35,18 @@ typedef struct		s_block
 
 typedef struct		s_env
 {
-	t_block						*tiny;
-	t_block						*small;
-	t_block						*large;
-	pthread_mutex_t				lock;
-	int										lock_init;
+	t_block			*tiny;
+	t_block			*small;
+	t_block			*large;
+	pthread_mutex_t	lock;
+	int				lock_init;
 }					t_env;
 
 t_env				g_env;
 
 // Locking for internal_*
-void		lock(void);
-void		unlock(void);
+void				lock(void);
+void				unlock(void);
 
 // Printing utils
 void				ft_putnbrbase(uintmax_t nbr, char *base);
@@ -58,40 +58,40 @@ void				*internal_malloc(size_t size);
 void				*internal_realloc(void *ptr, size_t size);
 
 // get a not free block. used by free and realloc
-t_block			*get_block(void *ptr);
+t_block				*get_block(void *ptr);
 
 // get the last block in the linked list
-t_block			*get_last_block(t_block *root);
+t_block				*get_last_block(t_block *root);
 
 // call find_free_block_by_size and alloc_blocks. This function must auto find the zone type required (used by malloc and realloc in certains cases)
-t_block			*alloc_block(size_t size);
+t_block				*alloc_block(size_t size);
 
 // used to mmap a fresh zone and add the generated block to the global linked list
-t_block			*alloc_blocks(t_block **blocks, size_t zone_size);
+t_block				*alloc_blocks(t_block **blocks, size_t zone_size);
 
 // mak a block as free
-t_block			*mark_block_as_free(t_block *block);
+t_block				*mark_block_as_free(t_block *block);
 
 // mak a block as used and assign size
-t_block			*mark_block_as_used(t_block *block, size_t size);
+t_block				*mark_block_as_used(t_block *block, size_t size);
 
 // try to find a block that can handle the requested size
-t_block			*find_free_block_by_size(t_block *zone, size_t size);
+t_block				*find_free_block_by_size(t_block *zone, size_t size);
 
 // Get Zone size by type
 size_t				get_zone_size(int type, size_t size);
 
 // Get a zone by type
-t_block			**get_zone_by_type(int type);
+t_block				**get_zone_by_type(int type);
 
 
 // Get a block info
-void		block_info(t_block *block);
+void				block_info(t_block *block);
 
-void		show_alloc_mem(void);
+void				show_alloc_mem(void);
 
-void		block_check(t_block *block);
+void				block_check(t_block *block);
 
-void		check_integrity(t_block *zone);
+void				check_integrity(t_block *zone);
 
 #endif

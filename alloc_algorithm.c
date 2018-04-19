@@ -13,7 +13,7 @@ static int		get_env_type(size_t size)
 	return (env_type);
 }
 
-t_block	**get_zone_by_type(int type)
+t_block			**get_zone_by_type(int type)
 {
 	if (type == ENV_TINY)
 		return (&g_env.tiny);
@@ -22,7 +22,7 @@ t_block	**get_zone_by_type(int type)
 	return (&g_env.large);	
 }
 
-size_t get_zone_size(int type, size_t size)
+size_t			get_zone_size(int type, size_t size)
 {
 	if (type == ENV_TINY)
 		return (TINY_ZONE);
@@ -45,20 +45,18 @@ void			setup_zone(t_block *initial_block, size_t zone_size, size_t alloc_count)
 	i = 0;
 	while (i < alloc_count)
 	{
-			tmp_addr = (uint64_t)tmp;
-			tmp->addr = (void*)(tmp_addr + sizeof(t_block));
-			tmp->free = 1;
-			tmp->size = zone_size / alloc_count;
-			tmp->zone_id = zone_id;
-			tmp->zone_type = zone_type;
-			if (i == alloc_count - 1)
-				tmp->next = NULL;
-			else
-			{
-				tmp->next = (void*)(tmp_addr + SPACING_SIZE + tmp->size);
-			}
-			tmp = tmp->next;
-			i++;
+		tmp_addr = (uint64_t)tmp;
+		tmp->addr = (void*)(tmp_addr + sizeof(t_block));
+		tmp->free = 1;
+		tmp->size = zone_size / alloc_count;
+		tmp->zone_id = zone_id;
+		tmp->zone_type = zone_type;
+		if (i == alloc_count - 1)
+			tmp->next = NULL;
+		else
+			tmp->next = (void*)(tmp_addr + SPACING_SIZE + tmp->size);
+		tmp = tmp->next;
+		i++;
 	}
 }
 

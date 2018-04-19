@@ -28,7 +28,7 @@ void				*internal_realloc(void *ptr, size_t size)
 	t_block		*block;
 	void			*ret;
 	size_t			zone_size;
-	
+
 	if (ptr == NULL)
 	{
 		ret = internal_malloc(size);
@@ -40,7 +40,10 @@ void				*internal_realloc(void *ptr, size_t size)
 
 	// Invalid block???
 	if ((block == NULL || block->free == 1) && ptr)
+	{
+		ft_putstr("Invalid block\n");
 		return (NULL);
+	}
 	if (ptr && size == 0)
 	{
 		internal_free(ptr);

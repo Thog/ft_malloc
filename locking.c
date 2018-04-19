@@ -7,7 +7,6 @@ int			init_lock(void)
 	{
 		if (!pthread_mutex_init(&g_env.lock, NULL))
 		{
-			//ft_putstr("LOCK initialized\n");
 			g_env.lock_init = 1;
 			return (0);
 		}

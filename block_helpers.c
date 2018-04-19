@@ -16,20 +16,6 @@ static t_block	*get_block_by_zone(t_block *zone, void *ptr)
 	return (NULL);
 }
 
-static t_block	*find_free_block_zone(t_block *zone, size_t size)
-{
-	size_t zone_size;
-
-	while (zone)
-	{
-		zone_size = get_zone_size(zone->zone_type, zone->size) / ALLOC_COUNT;
-		if (zone_size >= size && zone->free == 1)
-			return (zone);
-		zone = zone->next;
-	}
-	return (NULL);
-}
-
 t_block			*get_block(void *ptr)
 {
 	t_block *res;
@@ -46,5 +32,14 @@ t_block			*get_block(void *ptr)
 
 t_block			*find_free_block_by_size(t_block *zone, size_t size)
 {
-	return (find_free_block_zone(zone, size));
+	size_t zone_size;
+
+	while (zone)
+	{
+		zone_size = get_zone_size(zone->zone_type, zone->size) / ALLOC_COUNT;
+		if (zone_size >= size && zone->free == 1)
+			return (zone);
+		zone = zone->next;
+	}
+	return (NULL);
 }
