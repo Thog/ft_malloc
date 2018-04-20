@@ -14,6 +14,20 @@ t_block			*get_prev_block(t_block *root, t_block *next)
 	return (root);
 }
 
+int				can_be_free(t_block *zone, int zone_id)
+{
+	t_block *tmp;
+
+	tmp = zone;
+	while (tmp && tmp->next)
+	{
+		if (tmp->zone_id == zone_id)
+			if (tmp->free == 0)
+				return (0);
+		tmp = tmp->next;
+	}
+	return (1);
+}
 
 
 int				post_free(t_block *block)
@@ -36,7 +50,7 @@ int				post_free(t_block *block)
 			tmp->next = block->next;
 		munmap(block, block->size + sizeof(t_block));
 	}
-	else
+	else if (block->zone_id > 1)
 	{
 		tmp = *zone;
 		first_block_zone = NULL;
@@ -52,6 +66,8 @@ int				post_free(t_block *block)
 			}
 			tmp = tmp->next;
 		}
+		if (!can_be_free(*zone, block->zone_id - 1))
+			return (1);
 		// if we are here, the zone can be free		
 		last_block_zone = tmp;
 		// Remove all the occurences

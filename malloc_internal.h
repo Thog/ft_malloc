@@ -12,8 +12,8 @@
 #define ENV_TINY 1
 #define ENV_SMALL 2
 #define ALLOC_COUNT 100
-# define TINY_SIZE			(size_t)getpagesize() * 2
-# define SMALL_SIZE			(size_t)getpagesize() * 16
+# define TINY_SIZE			(size_t)1024
+# define SMALL_SIZE			TINY_SIZE * 4
 # define SPACING (size_t) 0
 # define SPACING_SIZE (size_t)sizeof(t_block) + SPACING
 # define BLOCKS_ZONE_SIZE	SPACING_SIZE* ALLOC_COUNT
