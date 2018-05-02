@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 17:01:13 by tguillem          #+#    #+#             */
-/*   Updated: 2018/05/02 17:03:13 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/05/02 18:58:21 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,11 @@ void		show_alloc_mem(void)
 {
 	size_t	total;
 
+	lock();
 	total = show_mem("TINY : ", g_env.tiny, 0);
 	total += show_mem("SMALL : ", g_env.small, 0);
 	total += show_mem("LARGE : ", g_env.large, 0);
+	unlock();
 	ft_putstr("Total : ");
 	ft_putnbrbase(total, "0123456789");
 	ft_putstr(" octets\n");
