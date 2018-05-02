@@ -1,4 +1,4 @@
-CFLAGS = -fPIC -pthread -g -Wextra -Wall -march=native -I./
+CFLAGS = -fPIC -pthread -g -Wall -Wextra -Werror -march=native -I./
 CC = gcc
 
 ifeq ($(HOSTTYPE),)

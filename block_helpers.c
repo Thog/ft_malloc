@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   block_helpers.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/02 16:53:52 by tguillem          #+#    #+#             */
+/*   Updated: 2018/05/02 16:53:52 by tguillem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "malloc_internal.h"
 
 static t_block	*get_block_by_zone(t_block *zone, void *ptr)
@@ -18,7 +30,7 @@ static t_block	*get_block_by_zone(t_block *zone, void *ptr)
 
 t_block			*get_block(void *ptr)
 {
-	t_block *res;
+	t_block	*res;
 
 	if (!ptr)
 		return (NULL);
@@ -32,7 +44,7 @@ t_block			*get_block(void *ptr)
 
 t_block			*find_free_block_by_size(t_block *zone, size_t size)
 {
-	size_t zone_size;
+	size_t	zone_size;
 
 	while (zone)
 	{

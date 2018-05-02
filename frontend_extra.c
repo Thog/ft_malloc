@@ -1,40 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   locking.c                                          :+:      :+:    :+:   */
+/*   frontend_extra.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/02 16:47:47 by tguillem          #+#    #+#             */
-/*   Updated: 2018/05/02 16:47:47 by tguillem         ###   ########.fr       */
+/*   Created: 2018/05/02 17:09:34 by tguillem          #+#    #+#             */
+/*   Updated: 2018/05/02 17:09:34 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc_internal.h"
-#include <errno.h>
 
-int			init_lock(void)
+void		*ft_memset(void *b, int c, size_t len)
 {
-	if (!g_env.lock_init)
-	{
-		if (!pthread_mutex_init(&g_env.lock, NULL))
-		{
-			g_env.lock_init = 1;
-			return (0);
-		}
-		return (1);
-	}
-	return (0);
+	unsigned char *str;
+
+	str = (unsigned char *)b;
+	while (len--)
+		*str++ = c;
+	return (b);
 }
 
-void		lock(void)
+void		*calloc(size_t nmemb, size_t size)
 {
-	if (!init_lock())
-		pthread_mutex_lock(&g_env.lock);
+	size_t	total;
+	void	*res;
+
+	total = nmemb * size;
+	res = malloc(total);
+	if (!res)
+		return (NULL);
+	return (ft_memset(res, 0, total));
 }
 
-void		unlock(void)
+void		*reallocf(void *ptr, size_t size)
 {
-	if (!init_lock())
-		pthread_mutex_unlock(&g_env.lock);
+	void	*res;
+
+	res = realloc(ptr, size);
+	if (!res && ptr)
+		free(ptr);
+	return (res);
 }
