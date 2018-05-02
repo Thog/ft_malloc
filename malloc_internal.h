@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 16:45:10 by tguillem          #+#    #+#             */
-/*   Updated: 2018/05/02 17:11:47 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/05/02 18:00:44 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,10 @@
 # define ENV_TINY 1
 # define ENV_SMALL 2
 # define ALLOC_COUNT 100
-# define TINY_SIZE			(size_t)1024
-# define SMALL_SIZE			TINY_SIZE * 4
-# define SPACING (size_t) 0
-# define SPACING_SIZE (size_t)sizeof(t_block) + SPACING
-# define BLOCKS_ZONE_SIZE	SPACING_SIZE* ALLOC_COUNT
+# define TINY_SIZE			(size_t)(getpagesize() / 4)
+# define SMALL_SIZE			(size_t)(TINY_SIZE * 2)
+# define SPACING_SIZE (size_t)sizeof(t_block)
+# define BLOCKS_ZONE_SIZE	(size_t)getpagesize()
 # define TINY_ZONE			(size_t)(TINY_SIZE * ALLOC_COUNT)
 # define SMALL_ZONE			(size_t)(SMALL_SIZE * ALLOC_COUNT)
 # define PROT_RW			PROT_READ | PROT_WRITE

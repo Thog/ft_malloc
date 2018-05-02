@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 16:59:52 by tguillem          #+#    #+#             */
-/*   Updated: 2018/05/02 17:21:51 by tguillem         ###   ########.fr       */
+/*   Updated: 2018/05/02 17:39:01 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,6 @@ static void		post_free_large(t_block *block, t_block **zone)
 int				post_free(t_block *block)
 {
 	t_block	**zone;
-	t_block	*tmp;
-	t_block	*last_block_zone;
-	t_block	*first_block_zone;
 
 	zone = get_zone_by_type(block->zone_type);
 	if (block->zone_type == ENV_LARGE)
